@@ -46,15 +46,15 @@ const CGFloat kRowHeight = 30.0;
 																					 @"year" : _years[_yearIndex] };
 	if (component == 0) {
 		_monthIndex = [_datePicker selectedRowInComponent: 0];
-		if ([self.delegate respondsToSelector: @selector(pickerDidSelectMonth:)])
-			[self.delegate pickerDidSelectMonth: _months[_monthIndex]];
+		if ([self.delegate respondsToSelector: @selector(picker:didSelectMonth:)])
+			[self.delegate picker:self didSelectMonth: _months[_monthIndex]];
 	}
 	else if (component == 1) {
 		_yearIndex = [_datePicker selectedRowInComponent: 1];
-		if ([self.delegate respondsToSelector: @selector(pickerDidSelectYear:)])
-			[self.delegate pickerDidSelectYear: _years[_yearIndex]];
+		if ([self.delegate respondsToSelector: @selector(picker:didSelectYear:)])
+			[self.delegate picker:self didSelectYear: _years[_yearIndex]];
 	}
-	
+
 	// If we have a min / max date, check if selected date is valid compared to them
 	NSInteger selectedYear = [[_years objectAtIndex:_yearIndex] integerValue];
 	NSDate *selectedDate = [self dateFromMonth:(_monthIndex + 1) andYear:selectedYear];
@@ -67,10 +67,10 @@ const CGFloat kRowHeight = 30.0;
 	
 	[pickerView selectRow:_monthIndex inComponent:0 animated:YES];
 	
-	if ([self.delegate respondsToSelector: @selector(pickerDidSelectRow:inComponent:)])
-		[self.delegate pickerDidSelectRow: row inComponent: component];
-	if ([self.delegate respondsToSelector: @selector(pickerDidSelectMonth:andYear:)])
-		[self.delegate pickerDidSelectMonth: _months[_monthIndex]
+	if ([self.delegate respondsToSelector: @selector(picker:didSelectRow:inComponent:)])
+		[self.delegate picker:self didSelectRow: row inComponent: component];
+	if ([self.delegate respondsToSelector: @selector(picker:didSelectMonth:andYear:)])
+		[self.delegate picker:self didSelectMonth: _months[_monthIndex]
 																andYear: _years[_yearIndex]];
 	//	[[NSNotificationCenter defaultCenter]
 	//     postNotificationName: @"pickerDidSelectRow"
@@ -146,8 +146,8 @@ const CGFloat kRowHeight = 30.0;
 #pragma mark - Actions
 
 - (void)_done {
-	if ([self.delegate respondsToSelector: @selector(pickerDidPressDoneWithMonth:andYear:)])
-		[self.delegate pickerDidPressDoneWithMonth: _months[_monthIndex]
+	if ([self.delegate respondsToSelector: @selector(picker:didPressDoneWithMonth:andYear:)])
+		[self.delegate picker:self didPressDoneWithMonth: _months[_monthIndex]
 																			 andYear: _years[_yearIndex]];
 	//	[[NSNotificationCenter defaultCenter]
 	//     postNotificationName: @"pickerDidPressDone"
@@ -162,8 +162,8 @@ const CGFloat kRowHeight = 30.0;
 - (void)_cancel {
 	if (!_initialValues) _initialValues  = @{ @"month" : _months[_monthIndex],
 																						@"year" : _years[_yearIndex] };
-	if ([self.delegate respondsToSelector: @selector(pickerDidPressCancelWithInitialValues:)]) {
-		[self.delegate pickerDidPressCancelWithInitialValues: _initialValues];
+	if ([self.delegate respondsToSelector: @selector(picker:didPressCancelWithInitialValues:)]) {
+		[self.delegate picker:self didPressCancelWithInitialValues: _initialValues];
 		[self.datePicker selectRow: [_months indexOfObject: _initialValues[@"month"]]
 									 inComponent: 0
 											animated: NO];
@@ -171,8 +171,8 @@ const CGFloat kRowHeight = 30.0;
 									 inComponent: 1
 											animated: NO];
 	}
-	else if ([self.delegate respondsToSelector: @selector(pickerDidPressCancel)])
-		[self.delegate pickerDidPressCancel];
+	else if ([self.delegate respondsToSelector: @selector(pickerDidPressCancel:)])
+		[self.delegate pickerDidPressCancel: self];
 	//	[[NSNotificationCenter defaultCenter]
 	//     postNotificationName: @"pickerDidPressDone"
 	//     object: self
@@ -211,14 +211,14 @@ const CGFloat kRowHeight = 30.0;
 }
 
 - (void)_sendFirstPickerValues {
-	if ([self.delegate respondsToSelector: @selector(pickerDidSelectRow:inComponent:)]) {
-		[self.delegate pickerDidSelectRow: [self.datePicker selectedRowInComponent:0]
+	if ([self.delegate respondsToSelector: @selector(picker:didSelectRow:inComponent:)]) {
+		[self.delegate picker:self didSelectRow: [self.datePicker selectedRowInComponent:0]
 													inComponent: 0];
-		[self.delegate pickerDidSelectRow: [self.datePicker selectedRowInComponent:1]
+		[self.delegate picker:self didSelectRow: [self.datePicker selectedRowInComponent:1]
 													inComponent: 1];
 	}
-	if ([self.delegate respondsToSelector: @selector(pickerDidSelectMonth:andYear:)])
-		[self.delegate pickerDidSelectMonth: _months[_monthIndex]
+	if ([self.delegate respondsToSelector: @selector(picker:didSelectMonth:andYear:)])
+		[self.delegate picker:self didSelectMonth: _months[_monthIndex]
 																andYear: _years[_yearIndex]];
 	_year = _years[_yearIndex];
 	_month = _months[_monthIndex];

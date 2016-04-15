@@ -6,19 +6,21 @@
 //  Copyright (c) 2014 Roland Leth. All rights reserved.
 //
 
+@class LTHMonthYearPickerView;
+
 @protocol LTHMonthYearPickerViewDelegate <NSObject>
 @optional
-- (void)pickerDidSelectRow:(NSInteger)row inComponent:(NSInteger)component;
-- (void)pickerDidSelectMonth:(NSString *)month;
-- (void)pickerDidSelectYear:(NSString *)year;
-- (void)pickerDidSelectMonth:(NSString *)month andYear:(NSString *)year;
-- (void)pickerDidPressDoneWithMonth:(NSString *)month andYear:(NSString *)year;
-- (void)pickerDidPressCancel;
+- (void)picker:(LTHMonthYearPickerView *)monthYearPickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component;
+- (void)picker:(LTHMonthYearPickerView *)monthYearPickerView didSelectMonth:(NSString *)month;
+- (void)picker:(LTHMonthYearPickerView *)monthYearPickerView didSelectYear:(NSString *)year;
+- (void)picker:(LTHMonthYearPickerView *)monthYearPickerView didSelectMonth:(NSString *)month andYear:(NSString *)year;
+- (void)picker:(LTHMonthYearPickerView *)monthYearPickerView didPressDoneWithMonth:(NSString *)month andYear:(NSString *)year;
+- (void)pickerDidPressCancel:(LTHMonthYearPickerView *)monthYearPickerView;
 /**
  @brief				  If you want to change your text field (and/or variables) dynamically by implementing any of the pickerDidSelect__ delegate methods, instead of doing the change when Done was pressed, you should implement this method too, so the Cancel button restores old values.
  @param initialValues @{ "month" : month, @"year" : year }
  */
-- (void)pickerDidPressCancelWithInitialValues:(NSDictionary *)initialValues;
+- (void)picker:(LTHMonthYearPickerView *)monthYearPickerView didPressCancelWithInitialValues:(NSDictionary *)initialValues;
 @end
 
 @interface LTHMonthYearPickerView : UIView <UIPickerViewDataSource, UIPickerViewDelegate>
